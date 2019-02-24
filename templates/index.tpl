@@ -1,17 +1,14 @@
-<!doctype>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-	<title>{{TITLE}}</title>
-
+    <meta charset="UTF-8">
+    <title>{{TITLE}}</title>
+    {{STYLE}}
 </head>
 <body>
-	<header>
-		<ul>
-			<li><a href="/">Главная</a></li>
-			<li><a href="/contacts.php">Контакты</a></li>
-		</ul>
-	</header>
-	<h1>{{H1}}</h1>
-	<div>{{CONTENT}}</div>
+    <div class="{{CLASS}}">
+        {{CONTENT}}
+    </div>
+{{JS}}
 </body>
 </html>
