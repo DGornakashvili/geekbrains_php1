@@ -1,8 +1,30 @@
 <?php
 
+function renderItems($array) {
+    $result = '';
 
-function render($file, $variables = [])
-{
+    foreach ($array as $item) {
+        $str = strlen($item);
+        if ($str < 5) {
+            continue;
+        }
+
+        if (strpos($item, '.jpg')) {
+            $src = 'img/' . $item;
+            $alt = str_replace(['_', '.jpg'], [' ', ''], $item);
+            $result .= "<img src='$src' alt='$alt'>";
+        } elseif (strpos($item, '.css')) {
+            $href = 'css/'. $item;
+            $result .= "<link rel='stylesheet' href='$href'>";
+        } elseif (strpos($item, '.js')) {
+            $src = 'js/' . $item;
+            $result .= "<script src='$src'></script>";
+        }
+    }
+    return $result;
+}
+
+function render($file, $variables = []) {
 	if (!is_file($file)) {
 		echo 'Template file "' . $file . '" not found';
 		exit();
@@ -13,7 +35,6 @@ function render($file, $variables = [])
 		exit();
 	}
 
-
 	$templateContent = file_get_contents($file);
 
 	if (empty($variables)) {
@@ -21,6 +42,10 @@ function render($file, $variables = [])
 	}
 
 	foreach ($variables as $key => $value) {
+	    if (is_array($value)) {
+	        $value = renderItems($value);
+        }
+
 		if (empty($value) || !is_string($value)) {
 			continue;
 		}
@@ -31,4 +56,47 @@ function render($file, $variables = [])
 	}
 
 	return $templateContent;
+}
+
+function generateGallery($array)
+{
+    $result= '';
+
+    foreach ($array as $image) {
+        if (is_file($image['url'])) {
+            $result .= render(TEMPLATES_DIR . 'galleryItem.tpl', [
+                'id' => $image['id'],
+                'src' => $image['url'],
+                'alt' => $image['title'],
+                'views' => ($image['views'] > 0) ? $image['views'] : 'null',
+            ]);
+        }
+    }
+    return $result;
+}
+function generateCss($sql)
+{
+    $result= '';
+    $array = getAssocResult($sql);
+    foreach ($array as $cssItem) {
+        if (is_file($cssItem['url'])) {
+            $result .= render(TEMPLATES_DIR . 'cssItem.tpl', [
+                'href' => $cssItem['url'],
+            ]);
+        }
+    }
+    return $result;
+}
+function generateJs($sql)
+{
+    $result= '';
+    $array = getAssocResult($sql);
+    foreach ($array as $jsItem) {
+        if (is_file($jsItem['url'])) {
+            $result .= render(TEMPLATES_DIR . 'jsItem.tpl', [
+                'src' => $jsItem['url'],
+            ]);
+        }
+    }
+    return $result;
 }
