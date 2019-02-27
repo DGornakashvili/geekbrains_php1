@@ -1,0 +1,1 @@
+<img src="{{SRC}}" data-id="{{ID}}" data-views="{{VIEWS}}" alt="{{ALT}}">

@@ -39,8 +39,8 @@ h1 {
 
 button {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 1%;
+    right: 0.5%;
     color: #ff144f;
     background-color: #a9a9a9;
     border: none;
@@ -49,4 +49,12 @@ button {
     font-size: 20px;
     width: 60px;
     height: 40px;
+}
+
+p {
+    position: absolute;
+    top: 1%;
+    right: 10%;
+    color: #ffffff;
+    text-shadow: 1px 1px 5px #ffffff;
 }

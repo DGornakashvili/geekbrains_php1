@@ -57,3 +57,46 @@ function render($file, $variables = []) {
 
 	return $templateContent;
 }
+
+function generateGallery($array)
+{
+    $result= '';
+
+    foreach ($array as $image) {
+        if (is_file($image['url'])) {
+            $result .= render(TEMPLATES_DIR . 'galleryItem.tpl', [
+                'id' => $image['id'],
+                'src' => $image['url'],
+                'alt' => $image['title'],
+                'views' => ($image['views'] > 0) ? $image['views'] : 'null',
+            ]);
+        }
+    }
+    return $result;
+}
+function generateCss($sql)
+{
+    $result= '';
+    $array = getAssocResult($sql);
+    foreach ($array as $cssItem) {
+        if (is_file($cssItem['url'])) {
+            $result .= render(TEMPLATES_DIR . 'cssItem.tpl', [
+                'href' => $cssItem['url'],
+            ]);
+        }
+    }
+    return $result;
+}
+function generateJs($sql)
+{
+    $result= '';
+    $array = getAssocResult($sql);
+    foreach ($array as $jsItem) {
+        if (is_file($jsItem['url'])) {
+            $result .= render(TEMPLATES_DIR . 'jsItem.tpl', [
+                'src' => $jsItem['url'],
+            ]);
+        }
+    }
+    return $result;
+}
