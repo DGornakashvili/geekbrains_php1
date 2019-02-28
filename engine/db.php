@@ -34,11 +34,11 @@ function show($sql)
 }
 function updateViews($id, $views) {
     $newViews = ($views > 0) ? $views + 1 : 1;
-    $sql = "UPDATE `images` SET `views` = $newViews WHERE `images`.`id` = $id";
+    $sql = "UPDATE `images` SET `views`='$newViews' WHERE `images`.`id`='$id'";
     $db = createConnection();
     $result = mysqli_query($db, $sql);
     mysqli_close($db);
     if (!$result) {
-        echo "UPDATE Unsuccessful";
+        echo "Update unsuccessful";
     }
 }

@@ -6,7 +6,7 @@ $imgId = (isset($_GET['id'])) ? $_GET['id'] : false;
 $sqlImg = 'SELECT * FROM `images` ORDER BY `images`.`views` DESC';
 $sqlCss = 'SELECT * FROM `css`';
 $sqlJs = 'SELECT * FROM `js`';
-$sqlSingleImg = "SELECT * FROM `images` WHERE `id`=$imgId";
+$sqlSingleImg = "SELECT * FROM `images` WHERE `id`='$imgId'";
 
 if ($imgId) {
     $img = show($sqlSingleImg);
