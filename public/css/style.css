@@ -37,8 +37,10 @@ h1 {
     height: 91%;
 }
 
-button {
+.galleryWrapper a,
+.galleryWrapper button {
     position: absolute;
+    display: block;
     top: 1%;
     right: 0.5%;
     color: #ff144f;
@@ -47,8 +49,12 @@ button {
     border-radius: 15px;
     outline: none;
     font-size: 20px;
+    text-decoration: none;
+    text-align: center;
+    line-height: 40px;
     width: 60px;
     height: 40px;
+    cursor: pointer;
 }
 
 p {

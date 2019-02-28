@@ -9,6 +9,7 @@
 <div class="{{CLASS}}">
     <h1>{{NAME}}</h1>
     <p>Количество просмотров: {{VIEWS}}</p>
+    <a href="/">X</a>
     {{CONTENT}}
 </div>
 </body>

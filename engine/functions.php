@@ -68,7 +68,7 @@ function generateGallery($array)
                 'id' => $image['id'],
                 'src' => $image['url'],
                 'alt' => $image['title'],
-                'views' => ($image['views'] > 0) ? $image['views'] : 'null',
+                'views' => ($image['views'] > 0) ? $image['views'] : 'no views',
             ]);
         }
     }

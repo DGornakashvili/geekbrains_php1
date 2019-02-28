@@ -14,10 +14,7 @@ class Gallery {
     let $title = $(`<h1>${this.imgAlt}</h1>`);
     let $info = $(`<p>Количество просмотров: ${this.views}</p>`);
     let $remBtn = $(`<button>X</button>`);
-    $remBtn.click(evt => {
-      this._remove(evt);
-      location.reload();
-    });
+    $remBtn.click(e => this._remove(e));
     let $img = $(`<img src="${this.imgSrc}" alt="${this.imgAlt}">`);
     $wrapper.append($title);
     $wrapper.append($info);
@@ -29,9 +26,10 @@ class Gallery {
   _remove(evt) {
     evt.preventDefault();
     $(`.${this.wrapperClass}`).remove();
+    location.reload();
   }
 
   _updateViews() {
-    $.get(`index.php/?id=${this.dataId}`);
+    $.get('index.php', {'id': `${this.dataId}`});
   }
 }
