@@ -1,6 +1,7 @@
 <?php
 
-function renderItems($array) {
+function renderItems($array)
+{
     $result = '';
 
     foreach ($array as $item) {
@@ -14,7 +15,7 @@ function renderItems($array) {
             $alt = str_replace(['_', '.jpg'], [' ', ''], $item);
             $result .= "<img src='$src' alt='$alt'>";
         } elseif (strpos($item, '.css')) {
-            $href = 'css/'. $item;
+            $href = 'css/' . $item;
             $result .= "<link rel='stylesheet' href='$href'>";
         } elseif (strpos($item, '.js')) {
             $src = 'js/' . $item;
@@ -24,43 +25,44 @@ function renderItems($array) {
     return $result;
 }
 
-function render($file, $variables = []) {
-	if (!is_file($file)) {
-		echo 'Template file "' . $file . '" not found';
-		exit();
-	}
+function render($file, $variables = [])
+{
+    if (!is_file($file)) {
+        echo 'Template file "' . $file . '" not found';
+        exit();
+    }
 
-	if (filesize($file) === 0) {
-		echo 'Template file "' . $file . '" is empty';
-		exit();
-	}
+    if (filesize($file) === 0) {
+        echo 'Template file "' . $file . '" is empty';
+        exit();
+    }
 
-	$templateContent = file_get_contents($file);
+    $templateContent = file_get_contents($file);
 
-	if (empty($variables)) {
-		return $templateContent;
-	}
+    if (empty($variables)) {
+        return $templateContent;
+    }
 
-	foreach ($variables as $key => $value) {
-	    if (is_array($value)) {
-	        $value = renderItems($value);
+    foreach ($variables as $key => $value) {
+        if (is_array($value)) {
+            $value = renderItems($value);
         }
 
-		if (empty($value) || !is_string($value)) {
-			continue;
-		}
+        if (empty($value) || !is_string($value)) {
+            continue;
+        }
 
-		$key = '{{' . strtoupper($key) . '}}';
+        $key = '{{' . strtoupper($key) . '}}';
 
-		$templateContent = str_replace($key, $value, $templateContent);
-	}
+        $templateContent = str_replace($key, $value, $templateContent);
+    }
 
-	return $templateContent;
+    return $templateContent;
 }
 
 function generateGallery($array)
 {
-    $result= '';
+    $result = '';
 
     foreach ($array as $image) {
         if (is_file($image['url'])) {
@@ -74,29 +76,59 @@ function generateGallery($array)
     }
     return $result;
 }
+
 function generateCss($sql)
 {
-    $result= '';
+    $result = '';
     $array = getAssocResult($sql);
     foreach ($array as $cssItem) {
-        if (is_file($cssItem['url'])) {
+        if (is_file(WWW_DIR . $cssItem['url'])) {
             $result .= render(TEMPLATES_DIR . 'cssItem.tpl', [
-                'href' => $cssItem['url'],
+                'href' => '/' . $cssItem['url'],
             ]);
         }
     }
     return $result;
 }
+
 function generateJs($sql)
 {
-    $result= '';
+    $result = '';
     $array = getAssocResult($sql);
     foreach ($array as $jsItem) {
-        if (is_file($jsItem['url'])) {
+        if (is_file(WWW_DIR . $jsItem['url'])) {
             $result .= render(TEMPLATES_DIR . 'jsItem.tpl', [
                 'src' => $jsItem['url'],
             ]);
         }
     }
     return $result;
+}
+
+function generateProduct($sql)
+{
+    $result = '';
+    $array = getAssocResult($sql);
+
+    foreach ($array as $product) {
+        $result .= render(TEMPLATES_DIR . 'productItem.tpl', [
+            'id' => $product['id'],
+            'src' => PRODUCT_IMG_DIR . $product['image'],
+            'name' => $product['name'],
+            'price' => $product['price'],
+            'text' => $product['description'],
+        ]);
+    }
+    return $result;
+}
+
+function uploadFile($filedName)
+{
+    if (!empty($_FILES[$filedName]) && !$_FILES[$filedName]['error']) {
+        $file = $_FILES[$filedName];
+        $uploadDir = WWW_DIR . PRODUCT_IMG_DIR;
+        $uploadFile = $uploadDir . basename($file['name']);
+        return move_uploaded_file($file['tmp_name'], $uploadFile);
+    }
+    return false;
 }
