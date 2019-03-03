@@ -7,6 +7,7 @@ define('ENGINE_DIR', SITE_DIR . 'engine/');
 define('WWW_DIR', SITE_DIR . 'public/');
 define('TEMPLATES_DIR', SITE_DIR . 'templates/');
 define('IMG_DIR', 'img/');
+define('PRODUCT_IMG_DIR', '/img/productImg/');
 
 define('DB_HOST', 'localhost');
 define('DB_USER', 'geek_brains');
