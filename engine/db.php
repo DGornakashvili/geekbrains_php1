@@ -30,7 +30,7 @@ function show($sql)
     if(empty($result)) {
         return null;
     }
-    return $result;
+    return $result[0];
 }
 function updateViews($id, $views) {
     $newViews = ($views > 0) ? $views + 1 : 1;
@@ -41,4 +41,11 @@ function updateViews($id, $views) {
     if (!$result) {
         echo "Update unsuccessful";
     }
+}
+function escapeString($db, $string)
+{
+    return mysqli_real_escape_string(
+        $db,
+        (string)htmlspecialchars(strip_tags($string))
+    );
 }
