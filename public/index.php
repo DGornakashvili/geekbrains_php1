@@ -14,12 +14,12 @@ if ($imgId) {
     echo render(TEMPLATES_DIR . 'single-img.tpl', [
         'title' => 'Car',
         'class' => 'galleryWrapper',
-        'name' => $img[0]['title'],
-        'views' => ($img[0]['views'] > 0) ? $img[0]['views'] : 'no views',
-        'content' => generateGallery($img),
+        'name' => $img['title'],
+        'views' => ($img['views'] > 0) ? $img['views'] : 'no views',
+        'content' => generateGallery(getAssocResult($sqlSingleImg)),
         'style' => generateCss($sqlCss),
     ]);
-    updateViews($imgId, $img[0]['views']);
+    updateViews($imgId, $img['views']);
 } else {
     echo render(TEMPLATES_DIR . 'index.tpl', [
         'title' => 'Cars',
