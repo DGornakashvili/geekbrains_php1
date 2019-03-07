@@ -6,7 +6,8 @@
     flex-wrap: wrap;
 }
 
-.product-crud {
+.products .product-crud,
+.single-product .product-crud {
     position: fixed;
     top: 0;
     left: 0;
@@ -15,10 +16,13 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: none;
 }
 
 .single-product .product-crud a,
-.products .product-crud a {
+.products .product-crud a,
+.single-product .product-crud span,
+.products .product-crud span {
     margin: 0 auto 10px;
     width: 50%;
     line-height: 40px;
@@ -29,20 +33,47 @@
     text-align: center;
 }
 
-.products a {
+.single-product .product-crud span,
+.products .product-crud span {
+    background-color: rgba(255, 190, 36, 0.1);
+}
+
+.products div {
     display: flex;
     flex-direction: column;
     align-items: center;
+    position: relative;
     width: 24%;
     margin-bottom: 10px;
-    text-decoration: none;
     color: #000;
     border: 1px solid rgba(91, 91, 91, 0.5);
     border-radius: 5px;
     overflow: hidden;
 }
 
-.products a img {
+.add-btn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 5px 10px;
+    border: 1px solid rgba(91, 91, 91, 0.5);
+    border-bottom: none;
+    border-right: none;
+    border-top-left-radius: 5px;
+    background-color: transparent;
+    line-height: 20px;
+    cursor: pointer;
+    outline: none;
+}
+
+.add-btn:hover,
+.remove-btn:hover {
+    border: none;
+    background-color: rgba(91, 91, 91, 0.5);
+    color: #fff;
+}
+
+.products div a img {
     width: 100%;
 }
 
@@ -67,4 +98,133 @@
 
 .single-product img {
     width: 100%;
+}
+
+.products .cart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 10%;
+    position: absolute;
+    top: 0.7%;
+    right: 0.1%;
+    padding: 5px 0;
+    background-color: rgba(255, 190, 36, 0.1);
+}
+
+.products .cart .cart-item {
+    position: relative;
+    width: 85%;
+    margin: 5px 0;
+}
+.cart .cart-item img {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.cart .cart-item h4,
+.cart .cart-item p {
+    padding: 0;
+    margin: 0 0 5px 0;
+    font-size: 12px;
+}
+
+.remove-btn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 5px;
+    border: 1px solid rgba(91, 91, 91, 0.5);
+    border-bottom: none;
+    border-right: none;
+    border-top-left-radius: 5px;
+    background-color: transparent;
+    line-height: 10px;
+    font-size: 10px;
+    cursor: pointer;
+    outline: none;
+}
+
+.signIn-form,
+.signUp-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 7% auto;
+    width: 600px;
+    height: 600px;
+    background-color: #49aee2;
+    border-radius: 50%;
+    text-align: center;
+}
+
+.signIn-form h3,
+.signIn-form h2,
+.signUp-form h3,
+.signUp-form h2 {
+    color: #682bdc;
+}
+
+.signIn-form form,
+.signUp-form form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.signIn-form form label,
+.signUp-form form label {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 5%;
+    font-size: 17px;
+    color: #682bdc;
+}
+
+.signIn-form form label input,
+.signUp-form form label input  {
+    margin-top: 5%;
+    padding: 10px 15px;
+    border: 1px solid rgba(91, 91, 91, 0.5);
+    border-radius: 5px;
+    font-size: 17px;
+    color: #682bdc;
+    outline: none;
+}
+
+.signIn-form form label input:hover,
+.signIn-form form label input:focus,
+.signUp-form form label input:hover,
+.signUp-form form label input:focus {
+    border-color: rgba(104, 43, 220, 0.7);
+}
+
+.signIn-form a,
+.signIn-btn,
+.signUp-btn {
+    border: 1px solid rgba(91, 91, 91, 0.5);
+    border-radius: 5px;
+    background-color: #ffd36c;
+    padding: 10px 15px;
+    font-size: 14px;
+    margin-top: 10px;
+    color: #682bdc;
+    outline: none;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.signIn-btn:hover,
+.signUp-btn:hover {
+    transform: scale(1.1);
+    border-color: rgba(104, 43, 220, 0.7);
+}
+
+.signIn-form .signError,
+.signUp-form .signError {
+    color: #ff144f;
 }

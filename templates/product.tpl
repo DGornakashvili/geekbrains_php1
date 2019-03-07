@@ -8,12 +8,18 @@
 <body>
 <div class="{{CLASS}}">
     <div class="product-crud">
+        {{SIGN}}
         <a href="/productCRUD/createProduct.php" target="_blank">Create</a>
         <a href="/productCRUD/showProduct.php" target="_blank">Read</a>
         <a href="/productCRUD/updateProduct.php" target="_blank">Update</a>
         <a href="/productCRUD/deleteProduct.php" target="_blank">Delete</a>
     </div>
     {{CONTENT}}
+    <div class="cart">
+        {{CARTCONTENT}}
+    </div>
 </div>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script src="js/product.js"></script>
 </body>
 </html>

@@ -122,6 +122,23 @@ function generateProduct($sql)
     return $result;
 }
 
+function generateCart($sql)
+{
+    $result = '';
+    $array = getAssocResult($sql);
+
+    foreach ($array as $product) {
+        $result .= render(TEMPLATES_DIR . 'cartItem.tpl', [
+            'id' => $product['id'],
+            'src' => PRODUCT_IMG_DIR . $product['image'],
+            'name' => $product['name'],
+            'price' => $product['price'],
+            'quantity' => $product['quantity'],
+        ]);
+    }
+    return $result;
+}
+
 function uploadFile($filedName)
 {
     if (!empty($_FILES[$filedName]) && !$_FILES[$filedName]['error']) {
@@ -131,4 +148,29 @@ function uploadFile($filedName)
         return move_uploaded_file($file['tmp_name'], $uploadFile);
     }
     return false;
+}
+
+function generateSISuccess($user, $massage)
+{
+    $result = render(TEMPLATES_DIR . 'signSuccess.tpl', [
+        'name' => $user['name'],
+        'login' => $user['login'],
+        'massage' => $massage,
+    ]);
+    return $result;
+}
+
+function generateSIError($massage)
+{
+    return "<h3 class='signError'>$massage</h3>";
+}
+
+function ajaxResult($type, $data, $error = false)
+{
+    header('Content-type: application/json');
+    echo json_encode([
+        'error' => $error,
+        'type' => $type,
+        'data' => $data,
+    ]);
 }
