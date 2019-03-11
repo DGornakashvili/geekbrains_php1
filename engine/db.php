@@ -6,6 +6,7 @@ function createConnection()
     mysqli_query($db, "SET CHARACTER SET 'utf8'");
     return $db;
 }
+
 function execQuery($sql)
 {
     $db = createConnection();
@@ -13,10 +14,15 @@ function execQuery($sql)
     mysqli_close($db);
     return $result;
 }
+
 function getAssocResult($sql)
 {
     $db = createConnection();
     $result = mysqli_query($db, $sql);
+
+    if (!$result) {
+        return [];
+    }
     $array_result = [];
     while ($row = mysqli_fetch_assoc($result)) {
         $array_result[] = $row;
@@ -24,15 +30,18 @@ function getAssocResult($sql)
     mysqli_close($db);
     return $array_result;
 }
+
 function show($sql)
 {
     $result = getAssocResult($sql);
-    if(empty($result)) {
+    if (empty($result)) {
         return null;
     }
     return $result[0];
 }
-function updateViews($id, $views) {
+
+function updateViews($id, $views)
+{
     $newViews = ($views > 0) ? $views + 1 : 1;
     $sql = "UPDATE `images` SET `views`='$newViews' WHERE `images`.`id`='$id'";
     $db = createConnection();
@@ -42,10 +51,29 @@ function updateViews($id, $views) {
         echo "Update unsuccessful";
     }
 }
+
 function escapeString($db, $string)
 {
     return mysqli_real_escape_string(
         $db,
         (string)htmlspecialchars(strip_tags($string))
     );
+}
+
+function insert($sql)
+{
+    $db = createConnection();
+
+    mysqli_query($db, $sql);
+
+    $id = mysqli_insert_id($db);
+
+    mysqli_close($db);
+
+    return $id;
+}
+
+function emptyUserCart($userId) {
+    $sql = "DELETE FROM `cart` WHERE `user_id`=$userId";
+    execQuery($sql);
 }

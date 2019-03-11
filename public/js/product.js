@@ -4,6 +4,7 @@ $(document).ready(() => {
     let $id = e.target.dataset.id;
     let $btn = e.target.className;
     let $cart = $('.cart');
+    let $cartInfo = $('.cart-total-order');
 
     if ($btn === 'add-btn') {
       $.post({
@@ -15,14 +16,14 @@ $(document).ready(() => {
         success: result => {
           if (!result.error) {
             if (result.type === 'create') {
-              if (!$cart.find('div').length) {
-                $cart.html(result.data);
-              } else {
-                $cart.append(result.data);
+              if ($cart.find('i')) {
+                $cart.find('i').remove();
               }
+              $cartInfo.before(result.data);
             } else if (result.type === 'update') {
               $(`.cart-item[data-id=${$id}]`).find('span').html(result.data);
             }
+            $('.cart-subtotal').html(result.subtotal);
           }
         }
       });
@@ -33,10 +34,11 @@ $(document).ready(() => {
           'id': $id,
           'method': 'remove',
         },
-        success: () => {
+        success: result => {
           $(`.cart-item[data-id=${$id}]`).remove();
-          if (!$cart.html().includes('div')) {
-            $cart.html('Cart is empty');
+          $('.cart-subtotal').html(result.subtotal);
+          if (!$('.cart-item').length) {
+            $cartInfo.before('<i>Cart is empty</i>');
           }
         },
       });
@@ -55,10 +57,11 @@ $(document).ready(() => {
           if (!result.error) {
             $('.signIn-form').html(result.data);
           } else {
-            if (!$('.signError').length) {
+            let $error = $('.signError');
+            if (!$error.length) {
               $('.signIn-form').prepend(result.data);
             } else {
-              $('.signError').html(result.data);
+              $error.html(result.data);
             }
           }
         },
@@ -80,11 +83,62 @@ $(document).ready(() => {
           if (!result.error) {
             $('.signUp-form').html(result.data);
           } else {
-            if (!$('.signError').length) {
+            let $error = $('.signError');
+            if (!$error.length) {
               $('.signUp-form').prepend(result.data);
             } else {
-              $('.signError').html(result.data);
+              $error.html(result.data);
             }
+          }
+        },
+      });
+    } else if ($btn === 'order-btn') {
+      if (!$('.cart-item').length) {
+        alert('No products to order!');
+        exit();
+      }
+
+      $.post({
+        url: '/productApi.php',
+        data: {
+          'method': 'order',
+        },
+        success: result => {
+          if (!result.error) {
+            $('.cart-item').each((i, e) => e.remove());
+            $('.cart-subtotal').html(result.subtotal);
+            $cartInfo.before('<i>Cart is empty</i>');
+          }
+        },
+      });
+    } else if ($btn === 'cancel-btn') {
+      $.post({
+        url: '/productApi.php',
+        data: {
+          'method': 'cancel',
+          'id': $id,
+        },
+        success: result => {
+          if (!result.error) {
+            const $order = $(`.orders-item[data-id=${$id}]`);
+
+            $order.find('.order-status').html(result.type);
+            $order.find(`.${$btn}`).replaceWith(result.data);
+          }
+        },
+      });
+    } else if ($btn === 'status-btn') {
+      const $status = $(`.orders-item[data-id=${$id}]`).find('.order-status').find('input');
+      $.post({
+        url: '/productApi.php',
+        data: {
+          'method': 'update-status',
+          'id': $id,
+          'status': $status.val(),
+        },
+        success: result => {
+          if (!result.error) {
+            alert(result.data);
           }
         },
       });
